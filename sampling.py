@@ -17,6 +17,11 @@ def cluster_and_sample(data, n_clusters, sample_sizes):
     kmeans = KMeans(n_clusters=n_clusters, init='k-means++', random_state=42).fit(embeddings)
     data['cluster'] = kmeans.labels_
 
+    # ['Illegal Activitiy', 'Hate Speech', 'Malware Generation',
+    #  'Physical Harm', 'Economic Harm', 'Fraud', 'Pornography',
+    #  'Political Lobbying', 'Privacy Violence', 'Legal Opinion',
+    #  'Financial Advice', 'Health Consultation', 'Gov Decision']
+    
     # Initialize a dictionary to store sampled data
     sampled_data = {size: [] for size in sample_sizes}
     excluded_scenarios = ["Illegal Activitiy", "Hate Speech", "Malware Generation"]
@@ -28,8 +33,9 @@ def cluster_and_sample(data, n_clusters, sample_sizes):
             cluster_data = scenario_data[scenario_data['cluster'] == cluster]
             
             for size in sample_sizes:
-                if len(cluster_data) >= size:
-                    sample_size = size // 10 // 10
+                # 10 scenerios
+                sample_size = max(int(len(cluster_data) / len(scenario_data) * size // 10), 1)
+                if len(cluster_data) >= sample_size:
                     sampled_data[size].extend(cluster_data.sample(sample_size).to_dict('records'))
                     
     return sampled_data
@@ -37,12 +43,12 @@ def cluster_and_sample(data, n_clusters, sample_sizes):
 def save_data(data, file_prefix):
     for size, records in data.items():
         df = pd.DataFrame(records)
-        df.to_csv(f'{file_prefix}_{size}.csv', index=False, encoding='utf-8')
+        df.to_csv(f'{file_prefix}_{size}.csv', index=False, encoding='utf-8', sep="#")
 
 if __name__ == "__main__":
     input_file = './unique_output_data.csv'
     output_file_prefix = 'sampled_data'
-    n_clusters = 50  # Adjust based on your needs
+    n_clusters = 10  # Adjust based on your needs
     sample_sizes = [100, 500, 1000, 2000]
     
     # Read the input CSV file

@@ -7,8 +7,6 @@ with open('./tmp.txt', 'r') as file:
 # Split the content by "\n\n\n" to separate items
 items = content.strip().split("\n\n\n")
 
-import pdb; pdb.set_trace()
-
 # Extract question and answer for each item
 qa_pairs = []
 for item in items:
