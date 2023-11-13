@@ -129,7 +129,7 @@ def call_gpt(model: str, prompt: Any, num_of_choices=5) -> str:
         # text-davinci-002	250,000	3,000
         # text-davinci-003	250,000	3,000
         # Add system setting prompt
-        prompt = f"{system_setting}\n\n\n{prompt}"
+        # prompt = f"{system_setting}\n\n\n{prompt}"
         response = openai.Completion.create(
             model=model,
             prompt=prompt,
@@ -147,9 +147,11 @@ def call_gpt(model: str, prompt: Any, num_of_choices=5) -> str:
         messages = []
         for i in range(n):
             msg = response["choices"][i]["text"].strip()
-            messages.append(ans)
+            messages.append(msg)
 
     for message in messages:
         print(message)
+
+    print("\n")
 
     return messages 

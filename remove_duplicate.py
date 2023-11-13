@@ -25,6 +25,6 @@ def remove_duplicates(input_file_name, output_file_name):
             writer.writerow(row)
 
 if __name__ == "__main__":
-    input_file_name = "output_data.csv"
+    input_file_name = "combined.csv"
     output_file_name = "unique_output_data.csv"
     remove_duplicates(input_file_name, output_file_name)
